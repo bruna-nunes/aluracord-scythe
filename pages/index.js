@@ -1,4 +1,5 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import BackgroundImage from '../images/bg-login.svg';
 import appConfig from '../config.json';
 
 function Titulo(props) {
@@ -8,9 +9,10 @@ function Titulo(props) {
         <Tag>{props.children}</Tag>
         <style jsx>{`
               ${Tag} {
-                  color: ${appConfig.theme.colors.neutrals['000']};
+                  color: ${appConfig.theme.colors.highlightIvory['600']};
                   font-size: 24px;
                   font-weight: 600;
+                  font-family: 'Roboto Condensed', sans-serif;;
               }
               `}</style>
       </>
@@ -21,6 +23,8 @@ function GlobalStyle(){
     return (
         <style global jsx>
             {`
+                @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+                
                 * {
                     margin: 0;
                     padding: 0;
@@ -28,8 +32,9 @@ function GlobalStyle(){
                     list-style: none;
                 }
                 body {
-                    font-family: 'Open Sans', sans-serif;
+                    font-family: 'Roboto Condensed', sans-serif;
                 }
+                
                 /* App fit Height */ 
                 html, body, #__next {
                     min-height: 100vh;
@@ -66,15 +71,15 @@ function GlobalStyle(){
 
 export default function PaginaInicial() {
     const username = 'bruna-nunes';
-  
     return (
       <>
         <GlobalStyle />
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            backgroundColor: appConfig.theme.colors.primary[500],
-            backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+            //backgroundColor: appConfig.theme.colors.primary[500],
+            //backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+            backgroundImage: `url(${BackgroundImage.src})`,
             backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
           }}
         >
@@ -90,7 +95,7 @@ export default function PaginaInicial() {
               width: '100%', maxWidth: '700px',
               borderRadius: '5px', padding: '32px', margin: '16px',
               boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-              backgroundColor: appConfig.theme.colors.neutrals[700],
+              backgroundColor: appConfig.theme.colors.neutrals['500'],
             }}
           >
             {/* Formulário */}
@@ -101,8 +106,8 @@ export default function PaginaInicial() {
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
               }}
             >
-              <Titulo tag="h2">Boas vindas de volta!</Titulo>
-              <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+              <Titulo tag="h2">Boas vindas à Nimbus Cumulo!</Titulo>
+              <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300], fontFamily: 'Roboto Condensed', fontWeight: "bold"}}>
                 {appConfig.name}
               </Text>
   
@@ -112,21 +117,25 @@ export default function PaginaInicial() {
                   neutral: {
                     textColor: appConfig.theme.colors.neutrals[200],
                     mainColor: appConfig.theme.colors.neutrals[900],
-                    mainColorHighlight: appConfig.theme.colors.primary[500],
+                    mainColorHighlight: appConfig.theme.colors.neutrals['400'],
                     backgroundColor: appConfig.theme.colors.neutrals[800],
                   },
                 }}
+                
               />
               <Button
+              
                 type='submit'
                 label='Entrar'
                 fullWidth
                 buttonColors={{
-                  contrastColor: appConfig.theme.colors.neutrals["000"],
-                  mainColor: appConfig.theme.colors.primary[500],
-                  mainColorLight: appConfig.theme.colors.primary[400],
-                  mainColorStrong: appConfig.theme.colors.primary[600],
+                  contrastColor: appConfig.theme.colors.highlightIvory['300'],
+                  mainColor: appConfig.theme.colors.highlightRed['800'],
+                  mainColorLight: appConfig.theme.colors.highlightRed['800'],
+                  mainColorStrong: appConfig.theme.colors.highlightRed['700'],
+
                 }}
+                styleSheet={{ fontFamily: 'Roboto Condensed', fontWeight: "bold"}}
               />
             </Box>
             {/* Formulário */}
@@ -152,6 +161,7 @@ export default function PaginaInicial() {
                 styleSheet={{
                   borderRadius: '50%',
                   marginBottom: '16px',
+
                 }}
                 src={`https://github.com/${username}.png`}
               />
@@ -161,7 +171,8 @@ export default function PaginaInicial() {
                   color: appConfig.theme.colors.neutrals[200],
                   backgroundColor: appConfig.theme.colors.neutrals[900],
                   padding: '3px 10px',
-                  borderRadius: '1000px'
+                  borderRadius: '1000px',
+                  fontFamily: 'Roboto Condensed'
                 }}
               >
                 {username}
