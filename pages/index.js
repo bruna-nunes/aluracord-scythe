@@ -1,6 +1,9 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import BackgroundImage from '../images/bg-login.svg';
 import appConfig from '../config.json';
+import { useRouter } from 'next/router';
+import React from 'react';
+import axios from 'axios';
 
 function Titulo(props) {
     const Tag = props.tag || 'h1';
@@ -17,40 +20,6 @@ function Titulo(props) {
               `}</style>
       </>
     );
-}
-
-function GlobalStyle(){
-    return (
-        <style global jsx>
-            {`
-                @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
-                
-                * {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                    list-style: none;
-                }
-                body {
-                    font-family: 'Roboto Condensed', sans-serif;
-                }
-                
-                /* App fit Height */ 
-                html, body, #__next {
-                    min-height: 100vh;
-                    display: flex;
-                    flex: 1;
-                }
-                #__next {
-                    flex: 1;
-                }
-                #__next > * {
-                    flex: 1;
-                }
-                /* ./App fit Height */ 
-            `}
-        </style>
-    )
 }
 
 //Componente React
@@ -70,10 +39,17 @@ function GlobalStyle(){
 //export default HomePage
 
 export default function PaginaInicial() {
-    const username = 'bruna-nunes';
+    const [username, setUsername] = React.useState('Confidencial');
+    const [followers, setFollowers] = React.useState('0');
+    const [following, setFollowing] = React.useState('0');
+    const [localization, setLocalization] = React.useState('Desconhecido')
+    const roteamento = useRouter();
+    const api = axios.create({
+      baseURL: "https://api.github.com",
+    });
+    
     return (
       <>
-        <GlobalStyle />
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -101,6 +77,10 @@ export default function PaginaInicial() {
             {/* Formulário */}
             <Box
               as="form"
+              onSubmit={function(e){
+                e.preventDefault();
+                roteamento.push('/chat');
+              }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -110,8 +90,38 @@ export default function PaginaInicial() {
               <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300], fontFamily: 'Roboto Condensed', fontWeight: "bold"}}>
                 {appConfig.name}
               </Text>
-  
+              {/*<input 
+              type="text" 
+              value={username}
+              onChange={function Handler(event){
+                console.log(event.target.value)
+                const valor = event.target.value;
+                setUsername(valor);
+              }}
+            />*/}
+               
               <TextField
+                value={username}
+                onChange={
+                  function Handler(event){
+                    console.log(event.target.value)
+                    const valor = event.target.value;
+                    api
+                    .get("/users/"+valor)
+                    .then((response) => {
+                      //alert("")
+                      setFollowers(response.data.followers);
+                      setFollowing(response.data.following);
+                      setUsername(valor);
+                      setLocalization(response.data.location);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      setUsername(valor);
+                    });
+                    //setUsername(valor)
+                  }
+                }
                 fullWidth
                 textFieldColors={{
                   neutral: {
@@ -123,6 +133,7 @@ export default function PaginaInicial() {
                 }}
                 
               />
+              
               <Button
               
                 type='submit'
@@ -166,17 +177,75 @@ export default function PaginaInicial() {
                 src={`https://github.com/${username}.png`}
               />
               <Text
-                variant="body4"
+                variant="body3"
                 styleSheet={{
                   color: appConfig.theme.colors.neutrals[200],
-                  backgroundColor: appConfig.theme.colors.neutrals[900],
+                  backgroundColor: appConfig.theme.colors.highlightRed[800],
                   padding: '3px 10px',
                   borderRadius: '1000px',
-                  fontFamily: 'Roboto Condensed'
+                  fontFamily: 'Roboto Condensed',
+                  textAlign: 'center',
+                  marginBottom: '10px',
                 }}
               >
                 {username}
               </Text>
+              <Text
+                variant="body4"
+                styleSheet={{
+                  color: appConfig.theme.colors.neutrals[200],
+                  backgroundColor: appConfig.theme.colors.neutrals[900],
+                  padding: '3px 5px',
+                  borderRadius: '1000px',
+                  fontFamily: 'Roboto Condensed',
+                  textAlign: 'center',
+                  margiinBottom: '10px',
+                }}
+              >
+                Localização: {localization}
+              </Text>
+              <Box
+              styleSheet={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                maxWidth: '220px',
+                padding: '2px',
+                backgroundColor: appConfig.theme.colors.neutrals[800],
+                border: '1px solid',
+                borderColor: appConfig.theme.colors.neutrals[999],
+                borderRadius: '10px',
+                flex: 1,
+              }}
+              >
+                <Text
+                  variant="body4"
+                  styleSheet={{
+                    color: appConfig.theme.colors.neutrals[200],
+                    backgroundColor: appConfig.theme.colors.neutrals[900],
+                    padding: '3px 10px',
+                    borderRadius: '1000px',
+                    fontFamily: 'Roboto Condensed',
+                    textAlign: 'center'
+                  }}
+                >
+                  Seguidores: {followers}
+                </Text>
+                <Text
+                  variant="body4"
+                  styleSheet={{
+                    color: appConfig.theme.colors.neutrals[200],
+                    backgroundColor: appConfig.theme.colors.neutrals[900],
+                    padding: '3px 10px',
+                    borderRadius: '1000px',
+                    fontFamily: 'Roboto Condensed',
+                    textAlign: 'center'
+                  }}
+                >
+                  Seguindo: {following}
+                </Text>
+              </Box>
+              
             </Box>
             {/* Photo Area */}
           </Box>
