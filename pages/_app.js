@@ -14,6 +14,17 @@ function GlobalStyle(){
                 body {
                     font-family: 'Roboto Condensed', sans-serif;
                 }
+                ::-webkit-scrollbar-track {
+                    background-color: #221d1a;
+                }
+                ::-webkit-scrollbar {
+                    width: 6px;
+                    background: #221d1a;
+                }
+                ::-webkit-scrollbar-thumb {
+                    background: #070605;
+                    border-radius: 10px;
+                }
                 
                 /* App fit Height */ 
                 html, body, #__next {
